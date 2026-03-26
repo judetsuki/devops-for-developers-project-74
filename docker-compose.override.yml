@@ -1,10 +1,10 @@
+version: '3.8'
+
 services:
   app:
-
-    ports:
-      - "8080:8080"
-    environment:
-      - NODE_ENV=development
- 
+    build:
+      context: .
+      dockerfile: Dockerfile  # Для разработки используем обычный Dockerfile
     volumes:
       - ./app:/app
+      - /app/node_modules
