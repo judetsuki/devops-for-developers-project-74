@@ -1,19 +1,27 @@
-# Подготовка проекта (CI вызывает это первым)
 setup:
-	make -C app setup
-	docker compose build
+	docker compose run --rm app make setup
 
-# Линтинг (здесь была ошибка в путях)
-lint:
-	make -C app lint
-	# Используем "-", чтобы make не падал у вас локально, если hadolint не установлен
-	-hadolint Dockerfile
-	-hadolint Dockerfile.production
+up-exist:
+	docker compose up --abort-on-container-exist
 
-# Запуск тестов (ваша рабочая команда с пробросом окружения)
-test:
-	docker compose -f docker-compose.yml run --rm -e NODE_ENV=test app npm test
+start:
+	docker compose up
 
-# Команда для CI (как того требует Hexlet)
+down:
+	docker compose down
+
 ci:
-	docker compose -f docker-compose.yml up --abort-on-container-exit --exit-code-from app
+	docker compose -f docker-compose.yml up --abort-on-container-exit
+
+test:
+	docker compose -f docker-compose.yml up --abort-on-container-exit
+
+
+ci-build:
+	docker compose -f docker-compose.yml build app
+
+push:
+	docker compose -f docker-compose.yml push app
+
+up-development:
+	docker run -p 8080:8080 -e NODE_ENV=development mtfoxtrot/devops-for-developers-project-74/latest make dev

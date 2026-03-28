@@ -2,18 +2,16 @@ services:
   app:
     build:
       context: .
-      dockerfile: Dockerfile 
-    command: make dev
-    depends_on:
-      - db
-    environment:
-      - NODE_ENV=development
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
     volumes:
       - ./app:/app
-      - /app/node_modules
+    command: make dev
 
   caddy:
-    image: caddy:2
+    image: caddy:latest
+    restart: unless-stopped
     ports:
       - "80:80"
       - "443:443"
