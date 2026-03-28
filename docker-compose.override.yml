@@ -3,7 +3,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile 
-    depends_on: [] 
+    command: make dev
+    depends_on:
+      - db
     environment:
       - NODE_ENV=development
     volumes:
